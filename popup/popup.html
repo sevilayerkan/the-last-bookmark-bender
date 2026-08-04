@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Last Bookmark Bender</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <p class="eyebrow">THE LAST</p>
+        <h1>Bookmark Bender</h1>
+      </div>
+      <button id="settingsButton" class="icon-button" aria-label="Open settings">⚙</button>
+    </header>
+
+    <section id="onboardingNotice" class="notice hidden">
+      <strong>Setup is not complete.</strong>
+      <span>Choose your default retention time first.</span>
+      <button id="openOnboardingButton">Finish setup</button>
+    </section>
+
+    <section class="save-card">
+      <div id="currentPage" class="current-page">Loading current page…</div>
+      <button id="saveButton" class="primary">Bend This Bookmark</button>
+      <p id="feedback" class="feedback" role="status"></p>
+    </section>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search bookmarks" />
+      <select id="sortSelect" aria-label="Sort bookmarks">
+        <option value="expiration">Soonest first</option>
+        <option value="newest">Newest first</option>
+        <option value="title">Title</option>
+      </select>
+    </section>
+
+    <section id="bookmarkList" class="bookmark-list"></section>
+  </main>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

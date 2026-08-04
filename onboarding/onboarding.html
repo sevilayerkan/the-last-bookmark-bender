@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome — The Last Bookmark Bender</title>
+  <link rel="stylesheet" href="onboarding.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">WELCOME TO</p>
+      <h1>The Last Bookmark Bender</h1>
+      <p class="lead">Temporary bookmarks. Final decisions. Less link hoarding.</p>
+    </section>
+
+    <section class="panel">
+      <div class="steps">
+        <article><span>1</span><div><h2>Save</h2><p>Click the extension and save the active page into the <strong>lastbookmark</strong> folder.</p></div></article>
+        <article><span>2</span><div><h2>Get warned</h2><p>The extension warns you shortly before the retention period ends.</p></div></article>
+        <article><span>3</span><div><h2>Final 24 hours</h2><p>At expiration, the bookmark gets one final 24-hour grace period.</p></div></article>
+        <article><span>4</span><div><h2>Deletion</h2><p>Unused bookmarks are automatically removed after the grace period.</p></div></article>
+      </div>
+
+      <form id="setupForm">
+        <h2>Choose your default retention</h2>
+        <div class="preset-grid" id="presetGrid">
+          <button type="button" data-minutes="60">1 hour</button>
+          <button type="button" data-minutes="360">6 hours</button>
+          <button type="button" data-minutes="1440">1 day</button>
+          <button type="button" data-minutes="4320">3 days</button>
+          <button type="button" data-minutes="10080" class="selected">7 days</button>
+          <button type="button" data-minutes="20160">14 days</button>
+          <button type="button" data-minutes="43200">30 days</button>
+        </div>
+
+        <div class="custom-row">
+          <label>Custom duration</label>
+          <div>
+            <input id="customValue" type="number" min="1" step="1" inputmode="numeric" value="7" />
+            <select id="customUnit">
+              <option value="1">Minutes</option>
+              <option value="60">Hours</option>
+              <option value="1440" selected>Days</option>
+            </select>
+          </div>
+          <p id="validationMessage"></p>
+        </div>
+
+        <button class="primary" type="submit">Start Bending Bookmarks</button>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="onboarding.js"></script>
+</body>
+</html>

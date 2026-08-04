@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings — The Last Bookmark Bender</title>
+  <link rel="stylesheet" href="settings.css" />
+</head>
+<body>
+  <main>
+    <p class="eyebrow">THE LAST BOOKMARK BENDER</p>
+    <h1>Settings</h1>
+
+    <form id="settingsForm">
+      <section>
+        <h2>Default retention</h2>
+        <p>Used for new bookmarks and when you choose Keep or Extend.</p>
+        <div class="duration-row">
+          <input id="retentionValue" type="number" min="1" />
+          <select id="retentionUnit">
+            <option value="60">Hours</option>
+            <option value="1440">Days</option>
+          </select>
+        </div>
+        <p id="validationMessage" class="validation"></p>
+      </section>
+
+      <section class="checks">
+        <label><input id="warningEnabled" type="checkbox" /> Warn before expiration</label>
+        <label><input id="deletionNotificationEnabled" type="checkbox" /> Notify after deletion</label>
+      </section>
+
+      <button type="submit">Save settings</button>
+      <p id="feedback" class="feedback"></p>
+    </form>
+  </main>
+
+  <script type="module" src="settings.js"></script>
+</body>
+</html>

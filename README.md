@@ -60,6 +60,7 @@ Keyboard shortcut defaults to **Alt+Shift+B** (customize at `chrome://extensions
 - Manifest V3 service worker: `background/service-worker.js`
 - Shared logic: `shared/` (`bookmarks`, `retention`, `storage`, `deleted`, `constants`)
 - UI: `popup/`, `settings/`, `onboarding/`, `privacy/`
+- Tests: `npm test` (Node 18+; does not load in Chrome)
 
 ## Contributing
 

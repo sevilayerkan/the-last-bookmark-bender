@@ -2,7 +2,7 @@
 
 This is a small, personally maintained project. **Bug reports and feature ideas are welcome. Unsolicited pull requests are not.**
 
-If you want to contribute code, [email first](mailto:notdepressedeveloper@gmail.com) and wait for a yes before opening a PR.
+If you want to contribute code, please [email first](mailto:notdepressedeveloper@gmail.com) before opening a PR.
 
 ## Issues
 
@@ -25,12 +25,25 @@ Useful if you want to try a change on your own machine (forks are fine under MIT
 
 There is no build step. The extension loads as unpacked Manifest V3 source.
 
+## Tests
+
+Retention, duplicate/limit, recently deleted, and restore logic run under Node's built-in test runner (Node 18+, no install):
+
+```
+npm test
+```
+
+or `node --test tests/retention.test.js tests/deleted.test.js tests/bookmarks.test.js`
+
+These files are not loaded by Chrome. Keep `GRACE_PERIOD_MINUTES` / `CHECK_INTERVAL_MINUTES` as they are for manual extension testing.
+
 ## Project layout
 
 - `background/service-worker.js` — alarms, notifications, expiration / grace / deletion
 - `shared/` — bookmarks, retention, storage, recently deleted, constants
 - `popup/`, `settings/`, `onboarding/`, `privacy/` — UI pages
 - `store/listing.md` — Chrome Web Store copy (not shipped in the extension)
+- `tests/` — unit tests for `shared/` (not loaded by the extension)
 
 ## License
 

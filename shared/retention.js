@@ -66,6 +66,21 @@ export function formatRemaining(targetTimestamp, now = Date.now()) {
   return `${days}d`;
 }
 
+/** True when Extend/Keep would actually move the deadline. */
+export function canExtendRetention(record, retentionMinutes, now = Date.now()) {
+  const lifecycle = getLifecycle(record, now);
+  if (lifecycle === STATUS.GRACE || lifecycle === "delete" || lifecycle === "start-grace") {
+    return true;
+  }
+
+  const remainingMinutes = Math.max(0, (record.expiresAt - now) / 60_000);
+  const targetMinutes = clampRetention(retentionMinutes);
+  const maxAllowed = Math.min(targetMinutes, MAX_RETENTION_MINUTES);
+
+  // Already at (or within 1 minute of) full retention / max time — further Extend does nothing useful.
+  return remainingMinutes < maxAllowed - 1;
+}
+
 /** Count bookmarks in warning / grace / pending-delete states (for badge). */
 export function countAttentionRecords(records, now = Date.now()) {
   let count = 0;

@@ -1,19 +1,23 @@
+import { STATUS } from "../shared/constants.js";
 import {
-  FOLDER_NAME,
-  MAX_BOOKMARK_COUNT,
-  MAX_RETENTION_MINUTES,
-  STATUS
-} from "../shared/constants.js";
+  isSupportedUrl,
+  restoreDeletedBookmark,
+  saveTemporaryBookmark
+} from "../shared/bookmarks.js";
 import { prependDeleted, removeDeletedEntry, toDeletedEntry } from "../shared/deleted.js";
 import {
   getDeleted,
-  getFolderId,
   getRecords,
   getSettings,
   saveDeleted,
   saveRecords
 } from "../shared/storage.js";
-import { clampRetention, formatRemaining, getLifecycle, resetRetention } from "../shared/retention.js";
+import {
+  canExtendRetention,
+  formatRemaining,
+  getLifecycle,
+  resetRetention
+} from "../shared/retention.js";
 
 const elements = {
   currentPage: document.querySelector("#currentPage"),
@@ -41,34 +45,6 @@ let settings = null;
 let records = {};
 let deleted = [];
 const itemFeedback = {};
-
-function isSupportedUrl(url) {
-  return /^https?:\/\//i.test(url || "");
-}
-
-function normalizeUrl(url) {
-  try {
-    const parsed = new URL(url);
-    parsed.hash = "";
-    if (parsed.pathname === "/") parsed.pathname = "";
-    return parsed.toString().replace(/\/$/, "");
-  } catch {
-    return url;
-  }
-}
-
-async function ensureFolder() {
-  const storedId = await getFolderId();
-  if (storedId) {
-    try {
-      const nodes = await chrome.bookmarks.get(storedId);
-      if (nodes[0] && !nodes[0].url) return nodes[0];
-    } catch (_) {}
-  }
-
-  const response = await chrome.runtime.sendMessage({ type: "ENSURE_FOLDER" });
-  return response.folder;
-}
 
 async function loadData() {
   settings = await getSettings();
@@ -240,90 +216,21 @@ function escapeHtml(value) {
 async function saveCurrentPage() {
   if (!activeTab || !isSupportedUrl(activeTab.url)) return;
 
-  const normalized = normalizeUrl(activeTab.url);
-
-  const duplicate = Object.values(records).find(
-    (record) => normalizeUrl(record.url) === normalized
-  );
-
-  if (duplicate) {
-    records[duplicate.bookmarkId] = resetRetention(
-      duplicate,
-      settings.retentionMinutes
-    );
-
-    await saveRecords(records);
-
-    elements.feedback.textContent =
-      "Bookmark already existed. Retention was reset.";
-
-    render();
-    return;
-  }
-
-  const folder = await ensureFolder();
-  const folderChildren = await chrome.bookmarks.getChildren(folder.id);
-
-  const currentBookmarkCount = folderChildren.filter(
-    (bookmark) => Boolean(bookmark.url)
-  ).length;
-
-  if (currentBookmarkCount >= MAX_BOOKMARK_COUNT) {
-    elements.feedback.textContent =
-      `Bookmark limit reached. You can keep up to ${MAX_BOOKMARK_COUNT} bookmarks.`;
-
-    return;
-  }
-
-  const bookmark = await chrome.bookmarks.create({
-    parentId: folder.id,
+  const result = await saveTemporaryBookmark({
     title: activeTab.title || activeTab.url,
     url: activeTab.url
   });
 
-  const now = Date.now();
-
-  records[bookmark.id] = {
-    bookmarkId: bookmark.id,
-    title: bookmark.title || activeTab.url,
-    url: bookmark.url,
-    createdAt: now,
-    retentionMinutes: settings.retentionMinutes,
-    expiresAt: now + settings.retentionMinutes * 60_000,
-    status: STATUS.ACTIVE,
-    warnedAt: null,
-    gracePeriodStartedAt: null,
-    gracePeriodEndsAt: null,
-    graceNotifiedAt: null
-  };
-
-  await saveRecords(records);
-
-  elements.feedback.textContent =
-    `Saved to ${FOLDER_NAME}. ${currentBookmarkCount + 1}/${MAX_BOOKMARK_COUNT}`;
-
+  elements.feedback.textContent = result.message;
+  records = await getRecords();
   render();
-}
-
-function canExtendRetention(record, now = Date.now()) {
-  const lifecycle = getLifecycle(record, now);
-  if (lifecycle === STATUS.GRACE || lifecycle === "delete" || lifecycle === "start-grace") {
-    return true;
-  }
-
-  const remainingMinutes = Math.max(0, (record.expiresAt - now) / 60_000);
-  const targetMinutes = clampRetention(settings.retentionMinutes);
-  const maxAllowed = Math.min(targetMinutes, MAX_RETENTION_MINUTES);
-
-  // Already at (or within 1 minute of) full retention / max time — further Extend does nothing useful.
-  return remainingMinutes < maxAllowed - 1;
 }
 
 async function extendBookmark(bookmarkId) {
   const record = records[bookmarkId];
   if (!record) return;
 
-  if (!canExtendRetention(record)) {
+  if (!canExtendRetention(record, settings.retentionMinutes)) {
     setItemFeedback(
       bookmarkId,
       "You cannot extend the duration further. Retention is already at its maximum."
@@ -397,61 +304,12 @@ function askConfirm({ title, message, confirmLabel = "Delete" }) {
 }
 
 async function restoreDeleted(entryId) {
-  const entry = deleted.find((item) => item.id === entryId);
-  if (!entry) return;
+  const result = await restoreDeletedBookmark(entryId);
+  if (result.code === "not-found") return;
 
-  const folder = await ensureFolder();
-  const folderChildren = await chrome.bookmarks.getChildren(folder.id);
-  const currentBookmarkCount = folderChildren.filter((bookmark) => Boolean(bookmark.url)).length;
-
-  if (currentBookmarkCount >= MAX_BOOKMARK_COUNT) {
-    elements.feedback.textContent =
-      `Bookmark limit reached. You can keep up to ${MAX_BOOKMARK_COUNT} bookmarks.`;
-    return;
-  }
-
-  const normalized = normalizeUrl(entry.url);
-  const duplicate = Object.values(records).find(
-    (record) => normalizeUrl(record.url) === normalized
-  );
-
-  if (duplicate) {
-    records[duplicate.bookmarkId] = resetRetention(duplicate, settings.retentionMinutes);
-    await saveRecords(records);
-    deleted = removeDeletedEntry(deleted, entryId);
-    await saveDeleted(deleted);
-    elements.feedback.textContent = "Already saved. Retention was reset.";
-    render();
-    return;
-  }
-
-  const bookmark = await chrome.bookmarks.create({
-    parentId: folder.id,
-    title: entry.title || entry.url,
-    url: entry.url
-  });
-
-  const now = Date.now();
-  const retentionMinutes = clampRetention(entry.retentionMinutes || settings.retentionMinutes);
-
-  records[bookmark.id] = {
-    bookmarkId: bookmark.id,
-    title: bookmark.title || entry.url,
-    url: bookmark.url,
-    createdAt: now,
-    retentionMinutes,
-    expiresAt: now + retentionMinutes * 60_000,
-    status: STATUS.ACTIVE,
-    warnedAt: null,
-    gracePeriodStartedAt: null,
-    gracePeriodEndsAt: null,
-    graceNotifiedAt: null
-  };
-
-  await saveRecords(records);
-  deleted = removeDeletedEntry(deleted, entryId);
-  await saveDeleted(deleted);
-  elements.feedback.textContent = "Bookmark restored.";
+  elements.feedback.textContent = result.message;
+  records = await getRecords();
+  deleted = await getDeleted();
   render();
 }
 

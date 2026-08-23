@@ -1,0 +1,8 @@
+{
+  "name": "the-last-bookmark-bender",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/retention.test.js tests/deleted.test.js tests/bookmarks.test.js"
+  }
+}

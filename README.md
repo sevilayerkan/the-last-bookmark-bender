@@ -35,7 +35,7 @@ All data stays on your device. See [`PRIVACY.md`](PRIVACY.md) (GitHub / Store) a
 
 For the **Chrome Web Store**, paste the public GitHub URL to `PRIVACY.md`, for example:
 
-`https://github.com/YOUR_USERNAME/YOUR_REPO/blob/main/PRIVACY.md`
+`https://github.com/sevilayerkan/the-last-bookmark-bender/blob/main/PRIVACY.md`
 
 Store listing copy and permission justifications: [`store/listing.md`](store/listing.md).
 

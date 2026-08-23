@@ -11,6 +11,28 @@ Temporary bookmarks with retention rules, expiration warnings, and a final 24-ho
 
 The toolbar badge shows how many bookmarks are expiring soon or in the final grace period.
 
+## Lifecycle
+
+```mermaid
+stateDiagram-v2
+    state "Expiring Soon" as Expiring
+    state "24h Grace" as Grace
+    state "Recently Deleted" as Deleted
+
+    [*] --> Active: Save
+    Active --> Expiring: warning lead time reached
+    Expiring --> Grace: retention period ends
+    Grace --> Deleted: grace period elapses
+    Deleted --> [*]: purged
+
+    Active --> Deleted: Delete
+    Expiring --> Active: Extend
+    Grace --> Active: Keep
+    Deleted --> Active: Restore
+```
+
+The warning lead time scales with the retention period: 15 minutes under 6 hours, 1 hour up to 48 hours, otherwise 24 hours. **Extend** and **Keep** both reset the deadline to the full retention period, so a bookmark can loop back to *Active* from any state until it is purged.
+
 ## Install (local / developer)
 
 1. Open `chrome://extensions`

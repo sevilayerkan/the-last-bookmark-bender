@@ -6,7 +6,11 @@ button, input, select { font: inherit; }
 header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .eyebrow { margin: 0; font-size: 11px; letter-spacing: .22em; color: #83b9ff; }
 h1 { margin: 2px 0 0; font-size: 23px; }
+.header-actions { display: flex; gap: 6px; }
 .icon-button { border: 1px solid #2b3544; color: white; background: #151b24; border-radius: 10px; padding: 9px 11px; cursor: pointer; }
+.icon-button:active { transform: scale(0.96); }
+#refreshButton.spinning { animation: refresh-spin .45s ease; }
+@keyframes refresh-spin { to { transform: rotate(360deg); } }
 .notice, .save-card, .bookmark-item { border: 1px solid #263142; background: #141b25; border-radius: 14px; }
 .notice { padding: 12px; margin-bottom: 12px; display: grid; gap: 7px; }
 .notice button { justify-self: start; }
@@ -27,6 +31,45 @@ input, select { width: 100%; border: 1px solid #2b3544; border-radius: 9px; back
 .actions { display: flex; gap: 7px; margin-top: 10px; }
 .actions button { flex: 1; border: 1px solid #344155; border-radius: 8px; background: #1b2431; color: white; padding: 7px; cursor: pointer; }
 .actions .danger { color: #ff9d9d; }
+.item-feedback { margin: 8px 0 0; color: #f0c674; font-size: 12px; line-height: 1.35; }
 .status-grace { border-color: #914b57; }
 .status-expiring { border-color: #8a6b2c; }
 .empty { text-align: center; color: #8fa0b6; padding: 46px 20px; }
+.deleted-section { margin-top: 8px; padding-top: 4px; border-top: 1px solid #1e2836; }
+.deleted-section .bookmark-item { opacity: .78; }
+.deleted-section .bookmark-item.status-deleted { border-color: #2a3342; }
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(5, 8, 12, .72);
+}
+.confirm-card {
+  width: 100%;
+  border: 1px solid #314155;
+  border-radius: 14px;
+  background: #151c27;
+  padding: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+}
+.confirm-card h2 { margin: 0; font-size: 16px; }
+.confirm-card p { margin: 8px 0 0; color: #9aacc2; font-size: 13px; line-height: 1.4; }
+.confirm-actions { display: flex; gap: 8px; margin-top: 16px; }
+.confirm-actions button {
+  flex: 1;
+  border: 1px solid #344155;
+  border-radius: 9px;
+  background: #1b2431;
+  color: white;
+  padding: 9px;
+  cursor: pointer;
+}
+.confirm-actions .danger {
+  border-color: #6d3a42;
+  background: #2a171b;
+  color: #ff9d9d;
+  font-weight: 700;
+}

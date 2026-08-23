@@ -13,7 +13,10 @@
         <p class="eyebrow">THE LAST</p>
         <h1>Bookmark Bender</h1>
       </div>
-      <button id="settingsButton" class="icon-button" aria-label="Open settings">⚙</button>
+      <div class="header-actions">
+        <button id="refreshButton" class="icon-button" aria-label="Refresh timers">↻</button>
+        <button id="settingsButton" class="icon-button" aria-label="Open settings">⚙</button>
+      </div>
     </header>
 
     <section id="onboardingNotice" class="notice hidden">
@@ -38,7 +41,23 @@
     </section>
 
     <section id="bookmarkList" class="bookmark-list"></section>
+
+    <section id="deletedSection" class="deleted-section hidden">
+      <div class="section-title">RECENTLY DELETED — <span id="deletedCount">0</span></div>
+      <div id="deletedList" class="bookmark-list"></div>
+    </section>
   </main>
+
+  <div id="confirmDialog" class="confirm-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="confirm-card">
+      <h2 id="confirmTitle">Delete bookmark?</h2>
+      <p id="confirmMessage">This bookmark will move to Recently Deleted.</p>
+      <div class="confirm-actions">
+        <button id="confirmCancel" type="button">Cancel</button>
+        <button id="confirmOk" type="button" class="danger">Delete</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="popup.js"></script>
 </body>

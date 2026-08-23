@@ -3,7 +3,7 @@
   "name": "The Last Bookmark Bender",
   "version": "1.0.0",
   "description": "Temporary bookmarks with retention rules, warnings, and a final 24-hour grace period.",
-  "permissions": ["activeTab", "tabs", "bookmarks", "storage", "alarms", "notifications"],
+  "permissions": ["activeTab", "tabs", "bookmarks", "storage", "alarms", "notifications", "contextMenus"],
   "background": {
     "service_worker": "background/service-worker.js",
     "type": "module"
@@ -11,6 +11,15 @@
   "action": {
     "default_title": "The Last Bookmark Bender",
     "default_popup": "popup/popup.html"
+  },
+  "commands": {
+    "bend-current-page": {
+      "suggested_key": {
+        "default": "Alt+Shift+B",
+        "mac": "Alt+Shift+B"
+      },
+      "description": "Bend the current page"
+    }
   },
   "options_page": "settings/settings.html",
   "icons": {

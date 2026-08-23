@@ -16,8 +16,9 @@
         <h2>Default retention</h2>
         <p>Used for new bookmarks and when you choose Keep or Extend.</p>
         <div class="duration-row">
-          <input id="retentionValue" type="number" min="1" />
+          <input id="retentionValue" type="number" min="1" step="1" inputmode="numeric" />
           <select id="retentionUnit">
+            <option value="1">Minutes</option>
             <option value="60">Hours</option>
             <option value="1440">Days</option>
           </select>
@@ -33,6 +34,26 @@
       <button type="submit">Save settings</button>
       <p id="feedback" class="feedback"></p>
     </form>
+
+    <section class="panel">
+      <h2>Keyboard shortcut</h2>
+      <p>
+        Default: <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> bends the current page.
+        Change it anytime under Chrome’s extension shortcuts.
+      </p>
+      <p class="hint">chrome://extensions/shortcuts</p>
+    </section>
+
+    <section class="panel">
+      <h2>Export</h2>
+      <p>Download your settings, active temporary bookmarks, and recently deleted items as JSON.</p>
+      <button id="exportButton" type="button" class="secondary">Export JSON</button>
+      <p id="exportFeedback" class="feedback" role="status"></p>
+    </section>
+
+    <p class="footer-links">
+      <a id="privacyLink" href="../privacy/privacy.html">Privacy Policy</a>
+    </p>
   </main>
 
   <script type="module" src="settings.js"></script>

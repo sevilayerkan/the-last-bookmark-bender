@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — The Last Bookmark Bender</title>
+  <link rel="stylesheet" href="privacy.css" />
+</head>
+<body>
+  <main>
+    <p class="eyebrow">THE LAST BOOKMARK BENDER</p>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated: August 23, 2026</p>
+
+    <section>
+      <h2>Summary</h2>
+      <p>
+        The Last Bookmark Bender runs entirely on your device. It does not send your bookmarks,
+        browsing history, or settings to any remote server. There is no account system and no analytics.
+      </p>
+    </section>
+
+    <section>
+      <h2>Data we store locally</h2>
+      <p>The extension stores the following in Chrome’s local extension storage on your computer:</p>
+      <ul>
+        <li>Your settings (default retention duration and notification preferences)</li>
+        <li>Metadata for temporary bookmarks (title, URL, created time, expiration / grace timestamps)</li>
+        <li>A short “Recently Deleted” list (title, URL, deletion time), capped in size</li>
+        <li>The ID of the extension’s bookmark folder</li>
+      </ul>
+      <p>
+        Bookmarks themselves are created and removed through Chrome’s Bookmarks API and appear in your
+        normal Chrome bookmark tree (in the <strong>lastbookmark</strong> folder).
+      </p>
+    </section>
+
+    <section>
+      <h2>Permissions</h2>
+      <ul>
+        <li><strong>bookmarks</strong> — create, read, move, and remove temporary bookmarks in the dedicated folder</li>
+        <li><strong>storage</strong> — save settings and retention metadata locally</li>
+        <li><strong>tabs / activeTab</strong> — read the active tab’s title and URL when you save it</li>
+        <li><strong>alarms</strong> — periodically check expiration and grace periods</li>
+        <li><strong>notifications</strong> — warn before expiration, during the final grace period, and after deletion (if enabled)</li>
+        <li><strong>contextMenus</strong> — offer “Bend this page” on the page/link context menu</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>What we do not do</h2>
+      <ul>
+        <li>We do not collect personal information on a server</li>
+        <li>We do not sell or share data with third parties</li>
+        <li>We do not use advertising trackers or analytics SDKs</li>
+        <li>We do not access page content beyond what you explicitly save (title and URL)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Data retention and deletion</h2>
+      <p>
+        Temporary bookmarks are removed automatically after their retention period and final grace period,
+        unless you keep or extend them. Manually deleted items may remain in Recently Deleted until you
+        restore or permanently remove them, or until the list reaches its size limit and older entries drop off.
+      </p>
+      <p>
+        Uninstalling the extension removes its local storage. Bookmark folder contents already in Chrome
+        may remain until you delete them yourself.
+      </p>
+    </section>
+
+    <section>
+      <h2>Children</h2>
+      <p>This extension is not directed at children under 13, and we do not knowingly collect data from them.</p>
+    </section>
+
+    <section>
+      <h2>Changes</h2>
+      <p>
+        If this policy changes, the “Last updated” date above will be revised. Material changes will be
+        reflected in the extension listing or release notes when published to the Chrome Web Store.
+      </p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>
+        Questions about privacy: contact the publisher listed in the Chrome Web Store listing. 
+        Or email me at <a href="mailto:notdepressedeveloper@gmail.com">notdepressedeveloper@gmail.com</a>.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

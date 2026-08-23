@@ -65,3 +65,20 @@ export function formatRemaining(targetTimestamp, now = Date.now()) {
   const days = Math.ceil(hours / 24);
   return `${days}d`;
 }
+
+/** Count bookmarks in warning / grace / pending-delete states (for badge). */
+export function countAttentionRecords(records, now = Date.now()) {
+  let count = 0;
+  for (const record of Object.values(records || {})) {
+    const lifecycle = getLifecycle(record, now);
+    if (
+      lifecycle === STATUS.EXPIRING_SOON ||
+      lifecycle === STATUS.GRACE ||
+      lifecycle === "start-grace" ||
+      lifecycle === "delete"
+    ) {
+      count += 1;
+    }
+  }
+  return count;
+}

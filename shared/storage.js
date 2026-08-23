@@ -20,6 +20,15 @@ export async function saveRecords(records) {
   await chrome.storage.local.set({ [STORAGE_KEYS.RECORDS]: records });
 }
 
+export async function getDeleted() {
+  const result = await chrome.storage.local.get(STORAGE_KEYS.DELETED);
+  return result[STORAGE_KEYS.DELETED] || [];
+}
+
+export async function saveDeleted(deleted) {
+  await chrome.storage.local.set({ [STORAGE_KEYS.DELETED]: deleted });
+}
+
 export async function getFolderId() {
   const result = await chrome.storage.local.get(STORAGE_KEYS.FOLDER_ID);
   return result[STORAGE_KEYS.FOLDER_ID] || null;

@@ -60,6 +60,8 @@ LIMITS
 • Up to 50 recently deleted entries
 
 Made for people who bookmark first and decide later — and want the later part to actually happen.
+
+Open source under the MIT License.
 ```
 
 ---
@@ -160,15 +162,12 @@ Useful for the privacy practices form:
 
 ## Privacy policy URL field
 
-After you push this repo to GitHub, use the Markdown privacy file as the Store Privacy Policy URL:
 
-```
-https://github.com/YOUR_USERNAME/YOUR_REPO/blob/main/PRIVACY.md
-```
+`
+https://github.com/sevilayerkan/the-last-bookmark-bender/blob/main/PRIVACY.md
+`
 
-(Replace `YOUR_USERNAME` / `YOUR_REPO` with your real GitHub path. The `blob/main/…` page is a public HTTPS URL and is accepted by the Chrome Web Store.)
-
-The in-extension page remains at `privacy/privacy.html` for Settings; keep both in sync when the policy changes.
+The in-extension page remains at `privacy/privacy.html` for Settings.
 ---
 
 ## Screenshot captions (optional)

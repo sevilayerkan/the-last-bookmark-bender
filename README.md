@@ -61,6 +61,10 @@ Keyboard shortcut defaults to **Alt+Shift+B** (customize at `chrome://extensions
 - Shared logic: `shared/` (`bookmarks`, `retention`, `storage`, `deleted`, `constants`)
 - UI: `popup/`, `settings/`, `onboarding/`, `privacy/`
 
+## Contributing
+
+Bug reports and feature ideas are welcome via GitHub issues. Unsolicited pull requests are not accepted — see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## License
 
 This project is open source under the [MIT License](LICENSE).

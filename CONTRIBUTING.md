@@ -35,7 +35,7 @@ npm test
 
 or `node --test tests/retention.test.js tests/deleted.test.js tests/bookmarks.test.js`
 
-These files are not loaded by Chrome. Keep `GRACE_PERIOD_MINUTES` / `CHECK_INTERVAL_MINUTES` as they are for manual extension testing.
+These files are not loaded by Chrome.
 
 ## Project layout
 
